@@ -1,6 +1,7 @@
 // Formulario de pedidos personalizados: validación, fotos de referencia, boceto, resumen y envío.
 import { $, $$, el, api, toast, trapFocus, whatsappLink, formatDate } from './utils.js';
 import { initSketch } from './sketch.js';
+import { initDatePicker } from './datepicker.js';
 
 const MAX_FILES = 4;
 const MAX_MB = 8;
@@ -24,7 +25,8 @@ export function initOrderForm(site) {
   let releaseFocus = null;
 
   form.started_at.value = Date.now();
-  form.needed_date.min = localToday();
+  // Al elegir fecha se revalida para quitar el mensaje de error si lo había
+  const datePicker = initDatePicker({ onChange: () => { if ($('[data-error-for="needed_date"]').textContent) validate(); } });
 
   // --- Tipo de producto "Otro" ---
   const otherField = $('#other-field');
@@ -161,7 +163,8 @@ export function initOrderForm(site) {
       $('#form-error').textContent = 'Revisa los campos marcados en rojo.';
       const first = Object.keys(errors)[0];
       const f = form.elements[first];
-      (f instanceof RadioNodeList ? f[0] : f)?.focus();
+      if (first === 'needed_date') datePicker.focus();
+      else (f instanceof RadioNodeList ? f[0] : f)?.focus();
       return;
     }
     lastValues = values;
@@ -225,6 +228,7 @@ export function initOrderForm(site) {
     files = [];
     renderThumbs();
     sketch.clear();
+    datePicker.reset();
     otherField.hidden = true;
     count.textContent = '0';
     form.started_at.value = Date.now();

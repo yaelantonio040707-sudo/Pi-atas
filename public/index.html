@@ -256,8 +256,14 @@
                 <p class="error" data-error-for="quantity"></p>
               </div>
               <div class="field">
-                <label for="f-date">¿Para qué fecha lo necesitas? <span class="req">*</span></label>
-                <input id="f-date" name="needed_date" type="date" required>
+                <label for="f-date" id="f-date-label">¿Para qué fecha lo necesitas? <span class="req">*</span></label>
+                <div class="datepick" id="datepick">
+                  <input type="hidden" name="needed_date" id="f-date-value">
+                  <button type="button" id="f-date" class="date-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="cal" aria-describedby="f-date-label">
+                    <span id="f-date-text">Elige una fecha</span><span aria-hidden="true">📅</span>
+                  </button>
+                  <div class="cal" id="cal" role="dialog" aria-label="Elegir fecha del pedido" hidden></div>
+                </div>
                 <p class="error" data-error-for="needed_date"></p>
               </div>
               <div class="field">
