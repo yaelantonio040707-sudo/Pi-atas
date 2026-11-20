@@ -1,0 +1,9 @@
+{
+  "name": "Keflita · Piñatas personalizadas y manualidades",
+  "short_name": "Keflita",
+  "icons": [{ "src": "/img/icon-512.png", "sizes": "512x512", "type": "image/png" }],
+  "theme_color": "#a14fc0",
+  "background_color": "#fffafe",
+  "display": "browser",
+  "start_url": "/"
+}

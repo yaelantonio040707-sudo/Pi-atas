@@ -470,9 +470,10 @@
       <div id="success-view" hidden>
         <div class="success-icon" aria-hidden="true">🎉</div>
         <h2 tabindex="-1" id="success-title">¡Solicitud enviada!</h2>
-        <p>Tu número de solicitud es <strong id="success-code"></strong>. Guárdalo por si necesitas hacer referencia a tu pedido.</p>
-        <p>Revisaremos los detalles y te contactaremos para darte la cotización y confirmar la disponibilidad. <strong>Tu pedido aún no está confirmado.</strong></p>
+        <p id="success-text-1">Tu número de solicitud es <strong id="success-code"></strong>. Guárdalo por si necesitas hacer referencia a tu pedido.</p>
+        <p id="success-text-2">Revisaremos los detalles y te contactaremos para darte la cotización y confirmar la disponibilidad. <strong>Tu pedido aún no está confirmado.</strong></p>
         <div class="modal-actions">
+          <a class="btn btn-ghost" id="success-sketch" hidden>Descargar mi boceto</a>
           <a class="btn btn-whatsapp" id="success-wa" target="_blank" rel="noopener" hidden>Enviar resumen por WhatsApp</a>
           <button type="button" class="btn btn-primary" id="success-close">Listo</button>
         </div>

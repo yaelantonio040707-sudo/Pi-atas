@@ -5,6 +5,10 @@ import { aiEnabled } from '../services/chatbot.js';
 import { retentionMonths } from '../services/retention.js';
 import { config } from '../config.js';
 
+// Versión estática (GitHub Pages): no hay servidor; las solicitudes viajan por WhatsApp o correo.
+let STATIC = false;
+export function setStaticMode(on) { STATIC = !!on; }
+
 export const esc = (v) =>
   String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
@@ -100,12 +104,16 @@ export function privacyPage() {
   <p>Contacto en materia de privacidad: ${arcoEmail ? `<a href="mailto:${esc(arcoEmail)}">${esc(arcoEmail)}</a>` : pending('correo para asuntos de privacidad')} · o mediante el <a href="/derechos-arco">formulario de derechos ARCO</a>.</p>
 
   <h2>2. Datos personales que recabamos</h2>
-  <ul>
+  ${STATIC ? `<ul>
+    <li><strong>Solicitud de pedido:</strong> el formulario de esta página no guarda datos; arma un mensaje con tu nombre, número de teléfono y los detalles de tu pedido (tipo de producto, temática, tamaño, colores, cantidad, fecha, descripción y presupuesto aproximado) y lo abre en tu WhatsApp para que tú decidas enviarlo. Recibimos esos datos, y las fotografías o bocetos que adjuntes, solo cuando nos envías el mensaje. Si decides incluirlos, también el nombre o la edad de la persona festejada.</li>
+    <li><strong>Solicitudes de derechos ARCO:</strong> nombre, medio de contacto y la descripción de tu solicitud, que nos llegan por WhatsApp o correo.</li>
+    <li><strong>Asistente virtual:</strong> funciona dentro de tu navegador con respuestas predefinidas; lo que escribes no se envía ni se guarda.</li>
+  </ul>` : `<ul>
     <li><strong>Formulario de pedido:</strong> nombre, número de teléfono y los detalles de tu pedido (tipo de producto, temática, tamaño, colores, cantidad, fecha, descripción y presupuesto aproximado). Si decides incluirlos, también el nombre o la edad de la persona festejada, fotografías de referencia y bocetos.</li>
     <li><strong>Solicitudes de derechos ARCO:</strong> nombre, medio de contacto y la descripción de tu solicitud.</li>
     <li><strong>Asistente virtual:</strong> los mensajes que escribes. No los guardamos en nuestra base de datos; te pedimos no escribir datos personales en el chat.</li>
     <li><strong>Datos técnicos:</strong> tu dirección IP se usa de forma temporal (en memoria, por minutos) para proteger el sitio contra abusos y envíos masivos.</li>
-  </ul>
+  </ul>`}
   <p><strong>No solicitamos datos personales sensibles</strong> (salud, religión, origen étnico, datos biométricos, etc.) ni datos financieros o bancarios. Por favor no los incluyas en los formularios, y evita enviar fotografías en las que aparezcan personas.</p>
   <p>Si nos proporcionas datos de otra persona (por ejemplo, el nombre del festejado o de quien recibirá el pedido), declaras contar con su autorización o, si es menor de edad, ser su madre, padre o tutor.</p>
 
@@ -124,11 +132,13 @@ export function privacyPage() {
   <p>No transferimos tus datos personales a terceros sin tu consentimiento, salvo en los casos de excepción previstos por la ley o por requerimiento de una autoridad competente.</p>
   <p>Para operar el sitio nos apoyamos en proveedores que tratan datos únicamente por nuestra cuenta y bajo nuestras instrucciones (encargados):</p>
   <ul>
-    <li>El proveedor de alojamiento web, donde se guarda la información del sitio.</li>
-    ${ai ? '<li><strong>Anthropic, PBC</strong> (Estados Unidos), que procesa los mensajes del asistente virtual para generar respuestas automáticas. El asistente es un programa de inteligencia artificial, no una persona.</li>' : ''}
+    ${STATIC
+      ? '<li>GitHub Pages (GitHub, Inc.), que aloja y entrega este sitio y puede registrar tu dirección IP al visitarlo.</li><li>WhatsApp (Meta), por donde nos envías tu solicitud; esa comunicación también se rige por el aviso de privacidad de WhatsApp.</li>'
+      : '<li>El proveedor de alojamiento web, donde se guarda la información del sitio.</li>'}
+    ${ai && !STATIC ? '<li><strong>Anthropic, PBC</strong> (Estados Unidos), que procesa los mensajes del asistente virtual para generar respuestas automáticas. El asistente es un programa de inteligencia artificial, no una persona.</li>' : ''}
     <li>Google Fonts (Google LLC), que entrega las tipografías del sitio y puede recibir tu dirección IP al cargarlas.</li>
   </ul>
-  <p>Si decides escribirnos por WhatsApp, esa comunicación también se rige por el aviso de privacidad de WhatsApp (Meta).</p>
+  ${STATIC ? '' : '<p>Si decides escribirnos por WhatsApp, esa comunicación también se rige por el aviso de privacidad de WhatsApp (Meta).</p>'}
 
   <h2>5. Derechos ARCO y revocación del consentimiento</h2>
   <p>Tienes derecho a <strong>acceder</strong> a tus datos, <strong>rectificarlos</strong> si son inexactos, <strong>cancelarlos</strong> cuando consideres que no se requieren para las finalidades señaladas y <strong>oponerte</strong> a su tratamiento para fines específicos. También puedes <strong>revocar tu consentimiento</strong> y <strong>limitar el uso o divulgación</strong> de tus datos.</p>
@@ -142,13 +152,19 @@ export function privacyPage() {
   <p>Te comunicaremos la respuesta en un plazo máximo de <strong>20 días</strong> contados desde que recibamos tu solicitud y, si resulta procedente, la haremos efectiva dentro de los <strong>15 días</strong> siguientes. Estos plazos podrán ampliarse una sola vez por un periodo igual cuando las circunstancias lo justifiquen, lo cual te informaremos. El ejercicio de estos derechos es gratuito.</p>
 
   <h2>6. Conservación de los datos</h2>
-  <p>Conservamos las solicitudes de pedido únicamente el tiempo necesario para atenderlas. Las solicitudes entregadas o canceladas se eliminan automáticamente <strong>${months} ${months === 1 ? 'mes' : 'meses'}</strong> después de su recepción, junto con sus fotografías y bocetos. Puedes pedir que se eliminen antes mediante una solicitud de cancelación.</p>
+  ${STATIC
+    ? `<p>Conservamos las conversaciones e imágenes de tu solicitud únicamente el tiempo necesario para atenderla. Las de pedidos entregados o cancelados las eliminamos a más tardar <strong>${months} ${months === 1 ? 'mes' : 'meses'}</strong> después de recibirlas. Puedes pedir que se eliminen antes mediante una solicitud de cancelación.</p>`
+    : `<p>Conservamos las solicitudes de pedido únicamente el tiempo necesario para atenderlas. Las solicitudes entregadas o canceladas se eliminan automáticamente <strong>${months} ${months === 1 ? 'mes' : 'meses'}</strong> después de su recepción, junto con sus fotografías y bocetos. Puedes pedir que se eliminen antes mediante una solicitud de cancelación.</p>`}
 
   <h2>7. Cookies y tecnologías similares</h2>
-  <p>Este sitio <strong>no usa cookies de publicidad ni de rastreo</strong>. Solo usa una cookie técnica para la sesión del panel de administración del negocio y guarda temporalmente la conversación del asistente en tu navegador (se borra al cerrar la pestaña).</p>
+  ${STATIC
+    ? '<p>Este sitio <strong>no usa cookies</strong>. Solo guarda temporalmente la conversación del asistente en tu navegador (se borra al cerrar la pestaña).</p>'
+    : '<p>Este sitio <strong>no usa cookies de publicidad ni de rastreo</strong>. Solo usa una cookie técnica para la sesión del panel de administración del negocio y guarda temporalmente la conversación del asistente en tu navegador (se borra al cerrar la pestaña).</p>'}
 
   <h2>8. Medidas de seguridad</h2>
-  <p>El sitio funciona con conexión cifrada (HTTPS), el acceso a las solicitudes está restringido con usuario y contraseña, y las imágenes que envías no son públicas.</p>
+  ${STATIC
+    ? '<p>El sitio funciona con conexión cifrada (HTTPS) y no almacena los datos de los formularios: la información solo sale de tu dispositivo cuando decides enviar el mensaje. El acceso a las conversaciones del negocio está protegido en su cuenta de WhatsApp.</p>'
+    : '<p>El sitio funciona con conexión cifrada (HTTPS), el acceso a las solicitudes está restringido con usuario y contraseña, y las imágenes que envías no son públicas.</p>'}
 
   <h2>9. Cambios a este aviso</h2>
   <p>Cualquier cambio a este aviso de privacidad se publicará en esta misma página, con la fecha de su última actualización.</p>

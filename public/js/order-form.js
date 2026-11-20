@@ -182,6 +182,58 @@ export function initOrderForm(site) {
   $('#summary-edit').addEventListener('click', closeModal);
   modal.addEventListener('click', (e) => { if (e.target === modal && !$('#summary-view').hidden) closeModal(); });
 
+  // --- Versión estática (GitHub Pages): sin servidor, el pedido se envía por WhatsApp ---
+  if (site.staticMode) {
+    $('#summary-send').textContent = 'Enviar por WhatsApp';
+    $('#summary-send').addEventListener('click', sendByWhatsApp, { capture: true });
+  }
+
+  function orderCode() {
+    const d = new Date();
+    const ymd = `${String(d.getFullYear()).slice(2)}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+    const rnd = Math.random().toString(16).slice(2, 6).toUpperCase();
+    return `KF-${ymd}-${rnd}`;
+  }
+
+  function sendByWhatsApp(e) {
+    e.stopImmediatePropagation();
+    const v = lastValues;
+    if (!site.whatsapp) {
+      $('#submit-error').textContent = 'El número de WhatsApp del negocio aún no está configurado en el sitio. Intenta más tarde.';
+      return;
+    }
+    const code = orderCode();
+    const hasImages = files.length || sketch.hasSketch();
+    const text = [
+      `¡Hola, ${site.businessName}! Quiero solicitar una cotización.`,
+      `Folio: ${code}`,
+      ...summaryRows(v).map(([k, val]) => `• ${k}: ${val}`),
+      `• Publicar fotos del trabajo terminado: ${v.allow_publish === '1' ? 'Sí, autorizo' : 'No'}`,
+      'Acepté el aviso de privacidad del sitio.',
+      hasImages ? 'Te envío mis imágenes de referencia en este chat.' : '',
+    ].filter(Boolean).join('\n');
+    const wa = whatsappLink(site.whatsapp, text);
+    window.open(wa, '_blank', 'noopener'); // se abre en el mismo clic para que el navegador no lo bloquee
+
+    const sketchUrl = sketch.hasSketch() ? sketch.dataUrl() : null;
+    $('#summary-view').hidden = true;
+    $('#success-view').hidden = false;
+    $('#success-title').textContent = '¡Ya casi! Envía el mensaje en WhatsApp';
+    $('#success-text-1').textContent = `Se abrió WhatsApp con tu solicitud ya escrita (folio ${code}). Solo presiona enviar.`;
+    $('#success-text-2').textContent = hasImages
+      ? 'Después adjunta en ese mismo chat tus fotos de referencia y tu boceto. Te responderemos con la cotización; tu pedido aún no está confirmado.'
+      : 'Te responderemos con la cotización y la disponibilidad. Tu pedido aún no está confirmado.';
+    const waBtn = $('#success-wa');
+    waBtn.hidden = false;
+    waBtn.href = wa;
+    waBtn.textContent = 'Abrir WhatsApp de nuevo';
+    const dl = $('#success-sketch');
+    dl.hidden = !sketchUrl;
+    if (sketchUrl) { dl.href = sketchUrl; dl.download = `boceto-${code}.png`; }
+    $('#success-title').focus();
+    resetForm();
+  }
+
   $('#summary-send').addEventListener('click', async () => {
     const btn = $('#summary-send');
     btn.disabled = true;
@@ -223,7 +275,10 @@ export function initOrderForm(site) {
     waBtn.hidden = !wa;
     if (wa) waBtn.href = wa;
     $('#success-title').focus();
+    resetForm();
+  }
 
+  function resetForm() {
     form.reset();
     files = [];
     renderThumbs();

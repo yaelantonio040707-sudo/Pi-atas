@@ -1,0 +1,26 @@
+{
+  "_instrucciones": "Datos de la versión estática (GitHub Pages). Llena los campos vacíos y ejecuta: npm run build:static. Deja vacío lo que no quieras publicar.",
+  "siteUrl": "",
+  "settings": {
+    "whatsapp": "",
+    "phone": "",
+    "email": "",
+    "location": "",
+    "hours": "",
+    "facebook": "",
+    "instagram": "",
+    "tiktok": "",
+    "legalName": "",
+    "legalAddress": "",
+    "rfc": "",
+    "privacyEmail": "",
+    "paymentInfo": "",
+    "depositInfo": "",
+    "deliveryInfo": "",
+    "shippingInfo": "",
+    "leadTimeInfo": "",
+    "returnsDays": "",
+    "retentionMonths": "12",
+    "legalUpdated": "2026-11-20"
+  }
+}

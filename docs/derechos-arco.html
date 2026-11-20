@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Derechos ARCO · Keflita</title>
+  <meta name="description" content="Ejerce tus derechos de acceso, rectificación, cancelación y oposición ante Keflita.">
+  
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="legal-page">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header scrolled">
+    <div class="container header-inner">
+      <a href="./" class="brand" aria-label="Keflita, ir al inicio">
+        <img src="img/logo.png" alt="" width="52" height="52">
+        <span class="brand-text"><span class="brand-name">Keflita</span><span class="brand-sub">Piñatas personalizadas y manualidades</span></span>
+      </a>
+      <a href="./" class="btn btn-ghost btn-sm">← Volver al inicio</a>
+    </div>
+  </header>
+  <main id="contenido" class="section legal">
+    <article class="container narrow legal-doc">
+      
+  <p class="eyebrow">Protección de datos personales</p>
+  <h1>Ejerce tus derechos ARCO</h1>
+  <p>Puedes solicitar el <strong>acceso</strong>, la <strong>rectificación</strong> o la <strong>cancelación</strong> de tus datos personales, <strong>oponerte</strong> a su uso, <strong>revocar</strong> tu consentimiento o <strong>limitar</strong> su uso o divulgación. El trámite es gratuito. Más información en el <a href="aviso-de-privacidad.html">aviso de privacidad</a>.</p>
+  
+  
+  <form class="form-card arco-form" method="post" action="/derechos-arco">
+    <div class="hp" aria-hidden="true"><label>Sitio web <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+    <input type="hidden" name="started_at" value="1795215898028">
+    <div class="grid-2">
+      <div class="field"><label for="a-name">Nombre completo <span class="req">*</span></label><input id="a-name" name="name" type="text" maxlength="100" required value=""></div>
+      <div class="field"><label for="a-contact">Teléfono o correo para responderte <span class="req">*</span></label><input id="a-contact" name="contact" type="text" maxlength="120" required value=""></div>
+      <div class="field"><label for="a-right">Derecho que deseas ejercer <span class="req">*</span></label>
+        <select id="a-right" name="right_type" required>
+          <option value="">Selecciona…</option>
+          <option>Acceso</option><option>Rectificación</option><option>Cancelación</option><option>Oposición</option><option>Revocación del consentimiento</option><option>Limitación del uso o divulgación</option>
+        </select></div>
+      <div class="field"><label for="a-order">Folio de tu solicitud de pedido <span class="optional">(si lo tienes)</span></label><input id="a-order" name="order_code" type="text" maxlength="30" placeholder="KF-…" value=""></div>
+    </div>
+    <div class="field"><label for="a-desc">Describe tu solicitud y los datos involucrados <span class="req">*</span></label>
+      <textarea id="a-desc" name="description" rows="5" maxlength="2000" required></textarea>
+      <p class="hint">No incluyas copias de identificaciones ni datos sensibles. Te pediremos acreditar tu identidad por un medio seguro.</p></div>
+    <label class="check-line"><input type="checkbox" name="is_owner" value="1" required> Declaro que soy el titular de los datos o su representante legal. <span class="req">*</span></label>
+    <div class="form-actions"><button class="btn btn-primary btn-lg" type="submit">Enviar solicitud</button></div>
+  </form>
+    </article>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <nav class="footer-legal" aria-label="Información legal">
+        <a href="aviso-de-privacidad.html">Aviso de privacidad</a><a href="terminos-y-condiciones.html">Términos y condiciones</a><a href="devoluciones-y-garantias.html">Devoluciones y garantías</a><a href="derechos-arco.html">Derechos ARCO</a>
+      </nav>
+      <p class="footer-copy">© 2026 Keflita</p>
+    </div>
+  </footer>
+<script src="js/site-data.js"></script>
+<script src="js/arco-static.js"></script>
+</body>
+</html>

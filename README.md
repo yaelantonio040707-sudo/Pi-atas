@@ -88,6 +88,21 @@ Todas las variables están en [`.env.example`](.env.example). Las importantes:
 
 Teléfono, correo, ubicación, horario, redes sociales, entregas, formas de pago y tiempos se capturan desde **Panel → Negocio**. Lo que quede vacío no se muestra y el asistente dirá que no tiene ese dato.
 
+## Versión gratuita en GitHub Pages (sin servidor)
+
+La carpeta `docs/` contiene una versión estática del sitio que se publica gratis en GitHub Pages. Se ve y funciona igual que la versión con servidor, con estas diferencias:
+
+| Función | Con servidor | GitHub Pages |
+|---|---|---|
+| Pedidos | Se guardan en el panel | Se arma el mensaje y se abre WhatsApp para que el cliente lo envíe; el boceto se descarga para adjuntarlo |
+| Derechos ARCO | Se registran en el panel | Se envían por WhatsApp (o correo) |
+| Asistente | IA opcional | Respuestas predefinidas (sin IA: una clave no puede ir en un sitio estático) |
+| Panel de administración | Sí | No: los datos se cambian en `static-site.json` |
+
+**Para cambiar datos** (WhatsApp, domicilio, formas de pago, etc.): edita `static-site.json`, ejecuta `npm run build:static` y sube los cambios. **Para cambiar la galería**: edita `server/seed/gallery.json` y las fotos de `public/img/gallery/`, y vuelve a generar.
+
+**Para activarla:** en GitHub, *Settings → Pages → Build and deployment*: *Deploy from a branch*, la rama del proyecto y la carpeta `/docs`. GitHub Pages gratuito requiere que el repositorio sea público. Después pon la dirección en `siteUrl` de `static-site.json` y vuelve a generar para crear el sitemap y `docs/qr-keflita.png`.
+
 ## Publicación
 
 El sitio necesita un servidor Node con **disco persistente** (por la base de datos y las fotos).
