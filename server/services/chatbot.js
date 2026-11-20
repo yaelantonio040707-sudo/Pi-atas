@@ -130,7 +130,9 @@ export function fallbackReply(message) {
     const keys = normalize(f.keywords).split(/\s*,\s*|\s{2,}/).map((k) => k.trim()).filter(Boolean);
     let score = 0;
     for (const k of keys) {
+      // Coincidencia exacta, o palabra que empieza igual (plurales: "devolucion" → "devoluciones")
       if (k.includes(' ') ? t.includes(k) : words.has(k)) score += 2;
+      else if (k.length > 4 && [...words].some((w) => w.startsWith(k))) score += 2;
       else if (k.length > 4 && t.includes(k.slice(0, -1))) score += 1;
     }
     for (const w of normalize(f.question).split(/\s+/)) if (w.length > 4 && words.has(w)) score += 1;
