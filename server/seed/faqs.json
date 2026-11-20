@@ -1,0 +1,42 @@
+[
+  {
+    "question": "¿Cuánto cuesta una piñata?",
+    "answer": "No manejamos precios fijos. Cada trabajo se cotiza de forma individual porque el precio depende del tamaño, el personaje o diseño, la complejidad, los materiales y los detalles de personalización. Envía tu solicitud desde el formulario de pedidos y te responderemos con la cotización.",
+    "keywords": "precio, precios, cuanto, cuesta, costo, cotizacion, cotizar, vale, valor, tarifa, presupuesto"
+  },
+  {
+    "question": "¿Qué productos elaboran?",
+    "answer": "Elaboramos piñatas personalizadas (personajes, números con nombre, animales y piñatas tradicionales), además de sombreros decorados, diademas, accesorios y disfraces sencillos, flores de papel, decoraciones y otros trabajos por encargo.",
+    "keywords": "productos, hacen, elaboran, venden, ofrecen, servicios, catalogo, trabajos, que hacen, sombrero, diadema, decoracion, accesorio"
+  },
+  {
+    "question": "¿Pueden hacer un diseño que no aparece en la galería?",
+    "answer": "Sí, la mayoría de los trabajos son personalizados. Describe tu idea en el formulario y, si puedes, adjunta una foto de referencia o haz un boceto. Revisaremos si es posible elaborarlo y te confirmaremos los detalles.",
+    "keywords": "personalizado, personalizada, diseño, otro, diferente, idea, especial, galeria, puedes hacer, pueden hacer, personaje"
+  },
+  {
+    "question": "¿Mi pedido queda confirmado al enviar el formulario?",
+    "answer": "No. Enviar la solicitud no confirma el pedido. Primero revisamos los detalles, confirmamos la disponibilidad para tu fecha y te enviamos la cotización. El pedido solo queda confirmado cuando te lo confirmemos directamente.",
+    "keywords": "confirmado, confirmar, confirmacion, apartado, apartar, reservado, seguro, enviado, solicitud"
+  },
+  {
+    "question": "¿Con cuánta anticipación debo hacer mi pedido?",
+    "answer": "El tiempo de elaboración depende del tipo de trabajo y de la agenda de pedidos. Te recomendamos solicitarlo con la mayor anticipación posible e indicar la fecha que necesitas; te confirmaremos si es posible.",
+    "keywords": "anticipacion, tiempo, cuanto tarda, tardan, dias, fecha, entrega, urgente, rapido, cuando"
+  },
+  {
+    "question": "¿Qué información necesito para pedir una piñata?",
+    "answer": "Ayuda mucho indicar: tipo de producto, tamaño aproximado, personaje o temática, colores, cantidad de piezas, la fecha en que lo necesitas, si lleva nombre o número, y una foto de referencia o un boceto. El presupuesto aproximado es opcional.",
+    "keywords": "informacion, datos, necesito, pedir, pedido, ordenar, encargar, como pido, requisitos, formulario"
+  },
+  {
+    "question": "¿Puedo enviar una foto o un dibujo de lo que quiero?",
+    "answer": "Sí. En el formulario de pedidos puedes subir hasta 4 fotos de referencia y también dibujar un boceto sencillo directamente en la página.",
+    "keywords": "foto, fotos, imagen, dibujo, boceto, referencia, ejemplo, subir, adjuntar"
+  },
+  {
+    "question": "¿Pueden poner el nombre o la edad del festejado?",
+    "answer": "Sí, es muy común: hacemos piñatas en forma de número y con el nombre del festejado. Indícalo en la descripción de tu pedido.",
+    "keywords": "nombre, edad, numero, cumpleaños, años, letra, letras"
+  }
+]

@@ -1,0 +1,20 @@
+[
+  { "slug": "numero-1-abejita", "title": "Número 1 con abejita", "category": "personalizados", "description": "Piñata en forma de número 1 con olas de colores, flores y una abejita con su canasta. Lleva el nombre del festejado.", "photos": 3, "featured": true },
+  { "slug": "numero-1-princesa", "title": "Número 1 de princesa “Ailani”", "category": "personalizados", "description": "Número 1 en rosa con corona dorada, banderín con el nombre, mariposas, flores y una princesa.", "photos": 3, "featured": true },
+  { "slug": "numero-2-superheroe", "title": "Número 2 de superhéroe “David”", "category": "personajes", "description": "Número 2 con el nombre del festejado, superhéroe arácnido, edificios y efectos de cómic.", "photos": 3, "featured": true },
+  { "slug": "personaje-anime", "title": "Personaje de anime", "category": "personajes", "description": "Piñata de personaje con cabello en picos y uniforme naranja con azul.", "photos": 2 },
+  { "slug": "torito", "title": "Torito “Vicente”", "category": "animales", "description": "Cabeza de torito con cuernos, textura con brillantina y placa con el nombre.", "photos": 3, "featured": true },
+  { "slug": "caballito", "title": "Caballito", "category": "animales", "description": "Caballito con crin de papel, montado sobre base con los colores patrios.", "photos": 3 },
+  { "slug": "unicornio", "title": "Unicornio", "category": "animales", "description": "Unicornio con cuerno dorado, orejitas con brillantina, flores y mechones de colores.", "photos": 3 },
+  { "slug": "elote", "title": "Elotito sonriente", "category": "tradicionales", "description": "Piñata de elote con hojas verdes, carita sonriente y pelitos de papel.", "photos": 3, "featured": true },
+  { "slug": "catrin", "title": "Catrín", "category": "tradicionales", "description": "Catrín de Día de Muertos con sombrero de copa, moño rojo y traje con brillantina.", "photos": 3, "featured": true },
+  { "slug": "ninas-primera-comunion", "title": "Niñas de primera comunión", "category": "personalizados", "description": "Par de piñatas de niñas con vestido blanco de papel, chonguitos y cruz.", "photos": 3 },
+  { "slug": "nina-comunion-camila", "title": "Niña de comunión “Camila”", "category": "personalizados", "description": "Niña de primera comunión con velo, rosario y el nombre de la festejada.", "photos": 3 },
+  { "slug": "nino-primera-comunion", "title": "Niño de primera comunión", "category": "personalizados", "description": "Niño de primera comunión con traje blanco, moño azul y rosario.", "photos": 3 },
+  { "slug": "sombrero-mano-esqueleto", "title": "Sombrero de copa con mano de esqueleto", "category": "sombreros", "description": "Sombrero de copa negro con listón naranja, flores de cempasúchil y mano de esqueleto.", "photos": 3, "featured": true },
+  { "slug": "sombrero-arana-negra", "title": "Sombrero de copa con araña", "category": "sombreros", "description": "Sombrero de copa con listón rojo, flores naranjas y amarillas y una araña.", "photos": 2 },
+  { "slug": "sombrero-arana-dorada", "title": "Sombrero de copa con araña dorada", "category": "sombreros", "description": "Sombrero de copa con listón rojo, flores y araña dorada.", "photos": 1 },
+  { "slug": "diadema-cempasuchil", "title": "Diadema de cempasúchil", "category": "accesorios", "description": "Diadema con flores de cempasúchil y arañitas para Día de Muertos.", "photos": 1 },
+  { "slug": "disfraz-calaverita-cadenas", "title": "Disfraz de calaverita", "category": "accesorios", "description": "Calaverita con cadenas de papel verde, para desfile o festival.", "photos": 2 },
+  { "slug": "flores-tricolor", "title": "Flores de papel tricolor", "category": "decoraciones", "description": "Flores de papel en verde, blanco y rojo para decorar en fiestas patrias.", "photos": 3 }
+]
