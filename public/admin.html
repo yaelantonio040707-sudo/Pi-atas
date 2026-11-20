@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Panel · Keflita</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <script src="/js/admin.js" type="module"></script>
+</head>
+<body class="admin">
+  <!-- Inicio de sesión -->
+  <main id="login-view" class="login-wrap" hidden>
+    <form id="login-form" class="login-card">
+      <img src="/img/logo.png" alt="Keflita" width="110" height="110">
+      <h1>Panel de administración</h1>
+      <p class="muted" id="login-note">Acceso exclusivo para el negocio.</p>
+      <div class="field">
+        <label for="l-user">Usuario</label>
+        <input id="l-user" name="username" type="text" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="l-pass">Contraseña</label>
+        <input id="l-pass" name="password" type="password" autocomplete="current-password" required>
+      </div>
+      <p class="error" id="login-error" role="alert"></p>
+      <button class="btn btn-primary btn-lg" type="submit">Entrar</button>
+      <a href="/" class="back-link">← Volver al sitio</a>
+    </form>
+  </main>
+
+  <!-- Panel -->
+  <div id="app-view" hidden>
+    <header class="admin-header">
+      <div class="admin-brand"><img src="/img/logo.png" alt="" width="40" height="40"><span>Panel Keflita</span></div>
+      <nav class="admin-tabs" role="tablist" aria-label="Secciones del panel">
+        <button role="tab" data-tab="orders" aria-selected="true">📥 Pedidos <span class="pill" id="new-count" hidden></span></button>
+        <button role="tab" data-tab="gallery" aria-selected="false">🖼️ Galería</button>
+        <button role="tab" data-tab="business" aria-selected="false">🏪 Negocio</button>
+        <button role="tab" data-tab="faqs" aria-selected="false">🤖 Asistente</button>
+        <button role="tab" data-tab="qr" aria-selected="false">🔳 Código QR</button>
+      </nav>
+      <div class="admin-actions">
+        <a href="/" target="_blank" rel="noopener" class="btn btn-ghost btn-sm">Ver sitio</a>
+        <button class="btn btn-ghost btn-sm" id="logout">Salir</button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <!-- PEDIDOS -->
+      <section data-panel="orders" class="panel">
+        <div class="panel-head">
+          <h1>Solicitudes de pedido</h1>
+          <div class="toolbar">
+            <input type="search" id="order-search" placeholder="Buscar por nombre, teléfono, folio o temática">
+            <select id="order-status" aria-label="Filtrar por estado"><option value="">Todos los estados</option></select>
+          </div>
+        </div>
+        <div class="orders-layout">
+          <div class="order-list" id="order-list"></div>
+          <article class="order-detail" id="order-detail"><p class="muted center">Selecciona una solicitud para ver sus detalles.</p></article>
+        </div>
+      </section>
+
+      <!-- GALERÍA -->
+      <section data-panel="gallery" class="panel" hidden>
+        <div class="panel-head">
+          <h1>Galería de trabajos</h1>
+          <button class="btn btn-primary" id="new-work">+ Agregar trabajo</button>
+        </div>
+        <form id="work-form" class="admin-card" hidden>
+          <h2>Nuevo trabajo</h2>
+          <div class="grid-2">
+            <div class="field"><label for="w-title">Título *</label><input id="w-title" name="title" type="text" maxlength="120" required></div>
+            <div class="field"><label for="w-cat">Categoría *</label><select id="w-cat" name="category" required></select></div>
+          </div>
+          <div class="field"><label for="w-desc">Descripción</label><textarea id="w-desc" name="description" rows="3" maxlength="600"></textarea></div>
+          <div class="field"><label for="w-photos">Fotos * (hasta 8, la primera será la portada)</label><input id="w-photos" name="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple required></div>
+          <label class="check"><input type="checkbox" name="featured"> Destacado</label>
+          <p class="error" id="work-error" role="alert"></p>
+          <div class="row-actions"><button type="button" class="btn btn-ghost" id="cancel-work">Cancelar</button><button class="btn btn-primary">Guardar trabajo</button></div>
+        </form>
+        <div class="works" id="works"></div>
+      </section>
+
+      <!-- NEGOCIO -->
+      <section data-panel="business" class="panel" hidden>
+        <div class="panel-head"><h1>Información del negocio</h1></div>
+        <form id="settings-form" class="admin-card">
+          <p class="muted">Lo que escribas aquí aparece en el sitio y lo usa el asistente virtual para responder. Deja vacío lo que no quieras publicar.</p>
+          <h2>Textos principales</h2>
+          <div class="grid-2">
+            <div class="field"><label for="s-businessName">Nombre del negocio</label><input id="s-businessName" name="businessName" type="text"></div>
+            <div class="field"><label for="s-businessSubtitle">Subtítulo</label><input id="s-businessSubtitle" name="businessSubtitle" type="text"></div>
+          </div>
+          <div class="field"><label for="s-tagline">Frase principal</label><input id="s-tagline" name="tagline" type="text"></div>
+          <div class="field"><label for="s-heroText">Texto de presentación</label><textarea id="s-heroText" name="heroText" rows="2"></textarea></div>
+          <div class="field"><label for="s-aboutText">Quiénes somos</label><textarea id="s-aboutText" name="aboutText" rows="4"></textarea></div>
+          <div class="field"><label for="s-aboutExtra">Otros trabajos que realizan</label><textarea id="s-aboutExtra" name="aboutExtra" rows="3"></textarea></div>
+          <h2>Contacto</h2>
+          <div class="grid-2">
+            <div class="field"><label for="s-whatsapp">WhatsApp (con código de país)</label><input id="s-whatsapp" name="whatsapp" type="tel" placeholder="Ej. 52 + 10 dígitos"><p class="hint">Activa el botón flotante de WhatsApp.</p></div>
+            <div class="field"><label for="s-phone">Teléfono</label><input id="s-phone" name="phone" type="tel"></div>
+            <div class="field"><label for="s-email">Correo</label><input id="s-email" name="email" type="email"></div>
+            <div class="field"><label for="s-location">Ubicación o zona</label><input id="s-location" name="location" type="text" placeholder="Ej. Ciudad, colonia o zona de entrega"></div>
+            <div class="field"><label for="s-hours">Horario de atención</label><input id="s-hours" name="hours" type="text"></div>
+            <div class="field"><label for="s-facebook">Facebook (enlace https://)</label><input id="s-facebook" name="facebook" type="url"></div>
+            <div class="field"><label for="s-instagram">Instagram (enlace https://)</label><input id="s-instagram" name="instagram" type="url"></div>
+            <div class="field"><label for="s-tiktok">TikTok (enlace https://)</label><input id="s-tiktok" name="tiktok" type="url"></div>
+          </div>
+          <h2>Información para el asistente</h2>
+          <div class="field"><label for="s-deliveryInfo">Entregas</label><textarea id="s-deliveryInfo" name="deliveryInfo" rows="2" placeholder="Ej. si hacen entregas, en qué zonas, o si se recoge en domicilio"></textarea></div>
+          <div class="field"><label for="s-paymentInfo">Formas de pago y anticipo</label><textarea id="s-paymentInfo" name="paymentInfo" rows="2"></textarea></div>
+          <div class="field"><label for="s-leadTimeInfo">Tiempos de elaboración</label><textarea id="s-leadTimeInfo" name="leadTimeInfo" rows="2"></textarea></div>
+          <p class="error" id="settings-error" role="alert"></p>
+          <div class="row-actions"><button class="btn btn-primary">Guardar cambios</button></div>
+        </form>
+      </section>
+
+      <!-- PREGUNTAS FRECUENTES -->
+      <section data-panel="faqs" class="panel" hidden>
+        <div class="panel-head">
+          <h1>Preguntas frecuentes del asistente</h1>
+          <button class="btn btn-primary" id="new-faq">+ Agregar pregunta</button>
+        </div>
+        <p class="muted" id="ai-status"></p>
+        <div id="faqs"></div>
+      </section>
+
+      <!-- QR -->
+      <section data-panel="qr" class="panel" hidden>
+        <div class="panel-head"><h1>Código QR del sitio</h1></div>
+        <div class="admin-card qr-card" id="qr-card"></div>
+      </section>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

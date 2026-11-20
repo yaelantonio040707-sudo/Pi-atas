@@ -1,0 +1,89 @@
+/* Panel de administración */
+body.admin { background: #f7f2fb; }
+.center { text-align: center; }
+.login-wrap { min-height: 100dvh; display: grid; place-items: center; padding: 16px; }
+.login-card { width: min(400px, 100%); background: #fff; border-radius: 24px; padding: 32px 28px; box-shadow: var(--shadow); text-align: center; }
+.login-card img { margin: 0 auto 8px; }
+.login-card h1 { font-size: 1.5rem; }
+.login-card .field { text-align: left; }
+.login-card .btn { width: 100%; }
+.back-link { display: inline-block; margin-top: 16px; font-weight: 700; }
+
+.admin-header { position: sticky; top: 0; z-index: 20; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding: 10px 18px; background: #fff; border-bottom: 1px solid var(--line); }
+.admin-brand { display: flex; align-items: center; gap: 8px; font-family: var(--font-head); font-weight: 600; color: var(--plum-900); }
+.admin-tabs { display: flex; gap: 4px; overflow-x: auto; flex: 1; scrollbar-width: none; }
+.admin-tabs button { flex: none; border: 0; background: none; padding: .6em .9em; border-radius: 10px; font-weight: 800; color: var(--plum-700); cursor: pointer; }
+.admin-tabs button[aria-selected="true"] { background: var(--pink-100); color: var(--violet-600); }
+.admin-actions { display: flex; gap: 8px; }
+.pill { background: var(--coral); color: #fff; border-radius: 999px; padding: 0 7px; font-size: .78rem; margin-left: 4px; }
+
+.admin-main { width: min(1240px, 100% - 24px); margin: 22px auto 60px; }
+.panel-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+.panel-head h1 { font-size: 1.6rem; margin: 0; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; }
+.toolbar input { min-width: 260px; }
+.toolbar select, .toolbar input { min-height: 44px; padding: .5em .9em; width: auto; }
+.admin-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; margin-bottom: 18px; }
+.admin-card h2 { font-size: 1.15rem; margin-top: 10px; }
+.row-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.check { display: inline-flex; gap: 8px; align-items: center; font-weight: 700; margin: 0 14px 12px 0; }
+.check input { width: 18px; height: 18px; accent-color: var(--violet); }
+
+/* Pedidos */
+.orders-layout { display: grid; grid-template-columns: 380px 1fr; gap: 18px; align-items: start; }
+.order-list { display: grid; gap: 8px; max-height: calc(100dvh - 190px); overflow-y: auto; padding-right: 4px; }
+.order-row { text-align: left; border: 2px solid transparent; background: #fff; border-radius: 14px; padding: 12px 14px; cursor: pointer; display: grid; gap: 2px; }
+.order-row:hover { border-color: var(--lilac-200); }
+.order-row[aria-current="true"] { border-color: var(--violet); }
+.order-row .top { display: flex; justify-content: space-between; gap: 8px; font-weight: 800; color: var(--plum-900); }
+.order-row .meta { font-size: .85rem; color: var(--muted); }
+.status { display: inline-block; font-size: .74rem; font-weight: 800; padding: 2px 9px; border-radius: 999px; background: #eee; color: #444; white-space: nowrap; }
+.status-nuevo { background: #ffe1e5; color: #a3132e; }
+.status-en-revisión { background: #fff1c9; color: #7a5600; }
+.status-cotizado { background: #e6e0ff; color: #4a2fc4; }
+.status-confirmado { background: #d7f5e7; color: #12704a; }
+.status-entregado { background: #e3edf9; color: #1d4f8a; }
+.status-cancelado { background: #eee; color: #666; }
+.order-detail { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; min-height: 300px; }
+.order-detail h2 { margin-bottom: 4px; }
+.detail-grid { display: grid; grid-template-columns: 170px 1fr; gap: 8px 14px; margin: 16px 0; }
+.detail-grid dt { font-weight: 800; color: var(--plum-700); }
+.detail-grid dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.attach { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin: 10px 0 18px; }
+.attach a { display: block; border: 2px solid var(--line); border-radius: 12px; overflow: hidden; background: #fafafa; text-decoration: none; color: inherit; }
+.attach img { width: 100%; aspect-ratio: 1; object-fit: contain; background: #fff; }
+.attach span { display: block; font-size: .78rem; font-weight: 800; padding: 4px 8px; }
+.quick-contact { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 14px; }
+
+/* Galería */
+.works { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.work-admin { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
+.work-admin.hidden-item { opacity: .6; }
+.work-photos { display: flex; gap: 6px; padding: 10px; overflow-x: auto; background: var(--pink-50); }
+.work-photos figure { position: relative; margin: 0; flex: none; }
+.work-photos img { width: 92px; height: 92px; object-fit: cover; border-radius: 10px; }
+.work-photos button { position: absolute; top: 4px; right: 4px; width: 24px; height: 24px; border-radius: 50%; border: 0; background: rgba(42, 18, 64, .85); color: #fff; cursor: pointer; font-size: .75rem; }
+.add-photo { flex: none; width: 92px; height: 92px; border: 2px dashed var(--lilac-200); border-radius: 10px; display: grid; place-items: center; cursor: pointer; font-size: .8rem; font-weight: 800; color: var(--muted); text-align: center; }
+.add-photo input { display: none; }
+.work-admin form { padding: 12px 14px 14px; display: grid; gap: 8px; }
+.work-admin input[type="text"], .work-admin textarea, .work-admin select { min-height: 40px; padding: .45em .7em; font-size: .95rem; }
+.work-admin textarea { min-height: 70px; }
+.btn-danger { background: #fff; color: var(--danger); border-color: #f3c6cf; }
+.btn-danger:hover { background: #fff0f2; }
+
+/* FAQ */
+.faq-admin { display: grid; gap: 8px; }
+.faq-admin textarea { min-height: 80px; }
+
+/* QR */
+.qr-card { display: grid; grid-template-columns: 300px 1fr; gap: 24px; align-items: center; }
+.qr-card img { width: 300px; height: 300px; border-radius: 12px; border: 1px solid var(--line); }
+
+@media (max-width: 900px) {
+  .orders-layout, .qr-card { grid-template-columns: 1fr; }
+  .order-list { max-height: 40vh; }
+  .detail-grid { grid-template-columns: 1fr; gap: 0; }
+  .detail-grid dd { margin-bottom: 8px; }
+  .toolbar input { min-width: 0; flex: 1; }
+  .qr-card img { width: 100%; height: auto; max-width: 300px; }
+}
