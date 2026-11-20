@@ -447,3 +447,38 @@ input:focus, textarea:focus, select:focus { outline: none; border-color: var(--v
   .modal-actions .btn { flex: 1 1 100%; }
 }
 .logo-404 { margin: 0 auto 20px; }
+
+/* ---------- Información de compra ---------- */
+.info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.info-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+.info-card h3 { font-size: 1.12rem; display: flex; gap: 8px; align-items: center; }
+.info-card p { color: var(--plum-700); margin-bottom: .5em; white-space: pre-line; }
+.info-card p:empty { display: none; }
+.info-card a { font-weight: 800; }
+
+/* ---------- Consentimiento ---------- */
+.privacy-short { font-size: .92rem; color: var(--plum-700); background: var(--pink-50); border-radius: var(--radius-sm); padding: 12px 14px; }
+.check-line { display: flex !important; gap: 10px; align-items: flex-start; font-weight: 700; color: var(--plum-700); margin: 0 0 12px; cursor: pointer; }
+.check-line input { width: 20px; height: 20px; flex: none; margin-top: 3px; accent-color: var(--violet); }
+.consent .error { margin: -6px 0 12px 30px; }
+.chat-disclaimer a { color: var(--violet-600); }
+
+/* ---------- Pie: enlaces legales ---------- */
+.footer-legal { display: flex; flex-wrap: wrap; gap: 6px 18px; width: 100%; }
+.footer-legal a { color: #f0e2fb; font-weight: 700; font-size: .92rem; }
+
+/* ---------- Páginas legales ---------- */
+.legal-doc h1 { font-size: clamp(1.9rem, 4.5vw, 2.6rem); }
+.legal-doc h2 { font-size: 1.3rem; margin-top: 1.8em; }
+.legal-doc p, .legal-doc li { color: var(--plum-700); }
+.legal-doc ul, .legal-doc ol { padding-left: 1.3em; }
+.legal-doc li { margin-bottom: .4em; }
+.legal-updated { color: var(--muted); font-size: .92rem; }
+.pending { background: #fff1c9; color: #6a4b00; padding: 0 .3em; border-radius: 4px; font-weight: 700; }
+.legal-success { background: #e9f8f0; border: 1px solid #b5e6cc; border-radius: var(--radius); padding: 18px 20px; margin: 18px 0; }
+.legal-error { background: #fdecef; border-radius: 10px; padding: 10px 14px; }
+.arco-form { margin-top: 24px; }
+.legal-page .site-footer { margin-top: 40px; }
+
+@media (max-width: 1000px) { .info-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .info-grid { grid-template-columns: 1fr; } }

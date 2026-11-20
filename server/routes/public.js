@@ -3,6 +3,7 @@ import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
 import crypto from 'node:crypto';
 import { db, tx, getSettings, listGallery, listFaqs, CATEGORIES } from '../db.js';
+import { retentionMonths } from '../services/retention.js';
 import { paths } from '../config.js';
 import { upload, assertImages, saveImage, deleteStoredFile } from '../lib/uploads.js';
 import { validateOrder, looksLikeSpam } from '../lib/validate.js';
@@ -12,7 +13,7 @@ const router = Router();
 
 const orderLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  limit: 5,
+  limit: Number(process.env.ORDER_RATE_LIMIT) || 5,
   standardHeaders: 'draft-8',
   legacyHeaders: false,
   message: { error: 'Has enviado varias solicitudes seguidas. Intenta de nuevo en unos minutos.' },
@@ -30,14 +31,15 @@ const chatLimiter = rateLimit({
 const PUBLIC_SETTINGS = [
   'businessName', 'businessSubtitle', 'tagline', 'heroText', 'aboutText', 'aboutExtra',
   'whatsapp', 'phone', 'email', 'location', 'hours', 'facebook', 'instagram', 'tiktok',
-  'deliveryInfo', 'paymentInfo', 'leadTimeInfo',
+  'deliveryInfo', 'paymentInfo', 'leadTimeInfo', 'shippingInfo', 'depositInfo', 'returnsDays',
+  'legalName', 'legalAddress', 'privacyEmail',
 ];
 
 router.get('/site', (req, res) => {
   const s = getSettings();
   const site = Object.fromEntries(PUBLIC_SETTINGS.map((k) => [k, s[k] || '']));
   res.set('Cache-Control', 'no-cache');
-  res.json({ ...site, categories: CATEGORIES, aiEnabled: aiEnabled() });
+  res.json({ ...site, categories: CATEGORIES, aiEnabled: aiEnabled(), retentionMonths: retentionMonths() });
 });
 
 router.get('/gallery', (req, res) => {
@@ -75,11 +77,13 @@ router.post('/orders', orderLimiter, orderFiles, async (req, res, next) => {
       tx(() => {
         const { lastInsertRowid: orderId } = db
           .prepare(
-            `INSERT INTO orders (code, name, phone, product_type, product_other, size, theme, colors, quantity, needed_date, description, budget)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+            `INSERT INTO orders (code, name, phone, product_type, product_other, size, theme, colors, quantity, needed_date,
+                                 description, budget, privacy_accepted_at, privacy_version, allow_publish)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), ?, ?)`
           )
           .run(code, data.name, data.phone, data.product_type, data.product_other, data.size, data.theme,
-            data.colors, data.quantity, data.needed_date, data.description, data.budget);
+            data.colors, data.quantity, data.needed_date, data.description, data.budget,
+            getSettings().legalUpdated || '', data.allow_publish);
         const insFile = db.prepare(
           'INSERT INTO order_files (order_id, kind, filename, original, mime, size) VALUES (?, ?, ?, ?, ?, ?)'
         );

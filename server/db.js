@@ -77,7 +77,32 @@ CREATE TABLE IF NOT EXISTS sessions (
   token_hash TEXT PRIMARY KEY,
   expires_at INTEGER NOT NULL
 );
+
+-- Solicitudes de derechos ARCO (acceso, rectificación, cancelación, oposición, revocación, limitación)
+CREATE TABLE IF NOT EXISTS arco_requests (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  code         TEXT NOT NULL UNIQUE,
+  status       TEXT NOT NULL DEFAULT 'recibida',
+  name         TEXT NOT NULL,
+  contact      TEXT NOT NULL,
+  right_type   TEXT NOT NULL,
+  order_code   TEXT NOT NULL DEFAULT '',
+  description  TEXT NOT NULL,
+  admin_notes  TEXT NOT NULL DEFAULT '',
+  created_at   TEXT NOT NULL DEFAULT (datetime('now')),
+  resolved_at  TEXT
+);
 `);
+
+/** Agrega una columna si no existe (actualiza bases de datos creadas con versiones anteriores). */
+function ensureColumn(table, column, definition) {
+  const cols = db.prepare(`PRAGMA table_info(${table})`).all().map((c) => c.name);
+  if (!cols.includes(column)) db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+}
+// Consentimiento registrado con cada pedido
+ensureColumn('orders', 'privacy_accepted_at', "TEXT NOT NULL DEFAULT ''");
+ensureColumn('orders', 'privacy_version', "TEXT NOT NULL DEFAULT ''");
+ensureColumn('orders', 'allow_publish', 'INTEGER NOT NULL DEFAULT 0');
 
 /** Ejecuta fn dentro de una transacción. */
 export function tx(fn) {
@@ -119,9 +144,17 @@ function seed() {
   }
 
   const faqCount = db.prepare('SELECT COUNT(*) AS n FROM faqs').get().n;
+  const insFaq = db.prepare('INSERT INTO faqs (question, answer, keywords, sort) VALUES (?, ?, ?, ?)');
   if (faqCount === 0) {
-    const ins = db.prepare('INSERT INTO faqs (question, answer, keywords, sort) VALUES (?, ?, ?, ?)');
-    tx(() => readSeed('faqs.json').forEach((f, i) => ins.run(f.question, f.answer, f.keywords, i)));
+    tx(() => readSeed('faqs.json').forEach((f, i) => insFaq.run(f.question, f.answer, f.keywords, i)));
+  }
+  // Preguntas sobre privacidad, pagos y garantías: se agregan una sola vez (también en bases existentes).
+  const legalSeeded = db.prepare("SELECT value FROM settings WHERE key = '_seedLegalFaqs'").get();
+  if (!legalSeeded) {
+    tx(() => {
+      readSeed('faqs-legal.json').forEach((f, i) => insFaq.run(f.question, f.answer, f.keywords, 100 + i));
+      db.prepare("INSERT INTO settings (key, value) VALUES ('_seedLegalFaqs', '1')").run();
+    });
   }
 }
 seed();

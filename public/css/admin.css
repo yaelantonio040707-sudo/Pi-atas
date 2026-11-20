@@ -87,3 +87,20 @@ body.admin { background: #f7f2fb; }
   .toolbar input { min-width: 0; flex: 1; }
   .qr-card img { width: 100%; height: auto; max-width: 300px; }
 }
+
+/* Privacidad y legal */
+.check-group h3 { font-size: 1.02rem; margin: 16px 0 8px; }
+.checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+.checklist li { display: flex; gap: 10px; align-items: center; padding: 8px 12px; border-radius: 10px; background: #f3fbf6; }
+.checklist li.missing { background: #fff6dc; font-weight: 700; }
+.checklist .link-btn { margin-left: auto; }
+.arco-item { border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; }
+.arco-top { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.arco-item .meta { font-size: .85rem; color: var(--muted); margin: 6px 0; overflow-wrap: anywhere; }
+.arco-desc { white-space: pre-wrap; background: var(--pink-50); border-radius: 10px; padding: 10px 12px; }
+.due { font-size: .82rem; font-weight: 800; color: #12704a; }
+.due-soon { color: var(--danger); }
+.status-recibida { background: #ffe1e5; color: #a3132e; }
+.status-identidad-verificada, .status-en-proceso { background: #fff1c9; color: #7a5600; }
+.status-atendida { background: #d7f5e7; color: #12704a; }
+.status-improcedente { background: #eee; color: #666; }

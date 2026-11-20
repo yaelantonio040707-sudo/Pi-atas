@@ -42,6 +42,10 @@ export function validateOrder(body) {
   if (data.theme.length < 2) errors.theme = 'Indica el personaje, animal, temática o diseño.';
   if (!Number.isInteger(data.quantity) || data.quantity < 1 || data.quantity > 500) errors.quantity = 'Indica una cantidad entre 1 y 500.';
 
+  // Consentimiento: obligatorio para las finalidades primarias; publicación de fotos es opcional.
+  if (body.accept_privacy !== '1') errors.accept_privacy = 'Para enviar tu solicitud debes aceptar el aviso de privacidad y los términos.';
+  data.allow_publish = body.allow_publish === '1' ? 1 : 0;
+
   if (!/^\d{4}-\d{2}-\d{2}$/.test(data.needed_date) || Number.isNaN(Date.parse(data.needed_date))) {
     errors.needed_date = 'Indica la fecha para la que necesitas el pedido.';
   } else if (data.needed_date < todayISO()) {

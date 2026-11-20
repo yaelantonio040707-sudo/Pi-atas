@@ -1,0 +1,22 @@
+[
+  {
+    "question": "¿Qué hacen con mis datos personales?",
+    "answer": "Usamos tu nombre, teléfono y los detalles de tu pedido solo para cotizar, contactarte, elaborar y entregar tu pedido. No los usamos para publicidad ni los vendemos. Puedes consultar el aviso de privacidad completo en /aviso-de-privacidad y ejercer tus derechos ARCO (acceso, rectificación, cancelación u oposición) en /derechos-arco.",
+    "keywords": "datos, privacidad, aviso de privacidad, arco, borrar, eliminar, cancelar mis datos, informacion personal, proteccion"
+  },
+  {
+    "question": "¿Qué formas de pago aceptan? ¿Puedo pagar en la página?",
+    "answer": "En la página no se realizan cobros ni se piden datos bancarios. Las formas de pago y el anticipo se indican por escrito en tu cotización; consulta también los términos y condiciones en /terminos-y-condiciones.",
+    "keywords": "pago, pagar, tarjeta, transferencia, efectivo, anticipo, deposito, formas de pago"
+  },
+  {
+    "question": "¿Qué pasa si mi pedido llega dañado o no es lo que acordamos?",
+    "answer": "Repórtalo con fotos y tu folio. Si el producto tiene un defecto de elaboración o no corresponde a lo acordado en la cotización, puedes elegir entre la reparación, la reposición o la devolución de lo pagado. Consulta la política completa en /devoluciones-y-garantias.",
+    "keywords": "devolucion, devolver, garantia, dañado, roto, defecto, reembolso, reclamacion, queja, cambio"
+  },
+  {
+    "question": "¿Hacen envíos? ¿Cuánto cuesta el envío?",
+    "answer": "La forma de entrega y, en su caso, el costo de envío se indican en la sección de información de compra del sitio y siempre por escrito en tu cotización, junto con el precio total.",
+    "keywords": "envio, envios, enviar, domicilio, entrega, entregan, recoger, costo de envio, flete"
+  }
+]

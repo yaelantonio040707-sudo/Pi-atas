@@ -43,6 +43,7 @@
         <button role="tab" data-tab="gallery" aria-selected="false">🖼️ Galería</button>
         <button role="tab" data-tab="business" aria-selected="false">🏪 Negocio</button>
         <button role="tab" data-tab="faqs" aria-selected="false">🤖 Asistente</button>
+        <button role="tab" data-tab="privacy" aria-selected="false">⚖️ Privacidad y legal <span class="pill" id="arco-count" hidden></span></button>
         <button role="tab" data-tab="qr" aria-selected="false">🔳 Código QR</button>
       </nav>
       <div class="admin-actions">
@@ -102,7 +103,7 @@
           <div class="field"><label for="s-heroText">Texto de presentación</label><textarea id="s-heroText" name="heroText" rows="2"></textarea></div>
           <div class="field"><label for="s-aboutText">Quiénes somos</label><textarea id="s-aboutText" name="aboutText" rows="4"></textarea></div>
           <div class="field"><label for="s-aboutExtra">Otros trabajos que realizan</label><textarea id="s-aboutExtra" name="aboutExtra" rows="3"></textarea></div>
-          <h2>Contacto</h2>
+          <h2>Contacto (se publica en el sitio)</h2>
           <div class="grid-2">
             <div class="field"><label for="s-whatsapp">WhatsApp (con código de país)</label><input id="s-whatsapp" name="whatsapp" type="tel" placeholder="Ej. 52 + 10 dígitos"><p class="hint">Activa el botón flotante de WhatsApp.</p></div>
             <div class="field"><label for="s-phone">Teléfono</label><input id="s-phone" name="phone" type="tel"></div>
@@ -113,10 +114,29 @@
             <div class="field"><label for="s-instagram">Instagram (enlace https://)</label><input id="s-instagram" name="instagram" type="url"></div>
             <div class="field"><label for="s-tiktok">TikTok (enlace https://)</label><input id="s-tiktok" name="tiktok" type="url"></div>
           </div>
-          <h2>Información para el asistente</h2>
-          <div class="field"><label for="s-deliveryInfo">Entregas</label><textarea id="s-deliveryInfo" name="deliveryInfo" rows="2" placeholder="Ej. si hacen entregas, en qué zonas, o si se recoge en domicilio"></textarea></div>
-          <div class="field"><label for="s-paymentInfo">Formas de pago y anticipo</label><textarea id="s-paymentInfo" name="paymentInfo" rows="2"></textarea></div>
-          <div class="field"><label for="s-leadTimeInfo">Tiempos de elaboración</label><textarea id="s-leadTimeInfo" name="leadTimeInfo" rows="2"></textarea></div>
+          <h2>Datos legales del responsable</h2>
+          <p class="muted">Obligatorios para el aviso de privacidad y los términos (Ley de Protección de Datos Personales y PROFECO). Se publican en las páginas legales.</p>
+          <div class="grid-2">
+            <div class="field"><label for="s-legalName">Nombre completo o razón social *</label><input id="s-legalName" name="legalName" type="text" maxlength="160"></div>
+            <div class="field"><label for="s-rfc">RFC <span class="optional">(opcional)</span></label><input id="s-rfc" name="rfc" type="text" maxlength="13"></div>
+          </div>
+          <div class="field"><label for="s-legalAddress">Domicilio físico completo *</label><input id="s-legalAddress" name="legalAddress" type="text" maxlength="300" placeholder="Calle, número, colonia, código postal, municipio, estado"></div>
+          <div class="grid-2">
+            <div class="field"><label for="s-privacyEmail">Correo para asuntos de privacidad (ARCO) *</label><input id="s-privacyEmail" name="privacyEmail" type="email"></div>
+            <div class="field"><label for="s-legalUpdated">Fecha de última actualización de los documentos legales</label><input id="s-legalUpdated" name="legalUpdated" type="date"></div>
+          </div>
+
+          <h2>Información de compra (PROFECO)</h2>
+          <p class="muted">Se muestra en la sección «Información de compra», en los términos y la usa el asistente.</p>
+          <div class="field"><label for="s-paymentInfo">Formas de pago *</label><textarea id="s-paymentInfo" name="paymentInfo" rows="2" placeholder="Ej. efectivo y transferencia bancaria"></textarea></div>
+          <div class="field"><label for="s-depositInfo">Anticipo y cancelaciones *</label><textarea id="s-depositInfo" name="depositInfo" rows="2" placeholder="Ej. se solicita un anticipo del __% para iniciar; si cancelas antes de empezar…"></textarea></div>
+          <div class="field"><label for="s-deliveryInfo">Forma de entrega *</label><textarea id="s-deliveryInfo" name="deliveryInfo" rows="2" placeholder="Ej. recolección en domicilio o entrega en ciertas zonas"></textarea></div>
+          <div class="field"><label for="s-shippingInfo">Costos de envío *</label><textarea id="s-shippingInfo" name="shippingInfo" rows="2" placeholder="Ej. sin costo en __; en otras zonas se cotiza según distancia"></textarea></div>
+          <div class="field"><label for="s-leadTimeInfo">Tiempos de elaboración y entrega *</label><textarea id="s-leadTimeInfo" name="leadTimeInfo" rows="2"></textarea></div>
+          <div class="grid-2">
+            <div class="field"><label for="s-returnsDays">Días para reportar un problema (garantía) *</label><input id="s-returnsDays" name="returnsDays" type="number" min="1" max="365"></div>
+            <div class="field"><label for="s-retentionMonths">Meses que se conservan las solicitudes concluidas</label><input id="s-retentionMonths" name="retentionMonths" type="number" min="1" max="120"><p class="hint">Después se eliminan automáticamente (entregadas o canceladas).</p></div>
+          </div>
           <p class="error" id="settings-error" role="alert"></p>
           <div class="row-actions"><button class="btn btn-primary">Guardar cambios</button></div>
         </form>
@@ -130,6 +150,28 @@
         </div>
         <p class="muted" id="ai-status"></p>
         <div id="faqs"></div>
+      </section>
+
+      <!-- PRIVACIDAD Y LEGAL -->
+      <section data-panel="privacy" class="panel" hidden>
+        <div class="panel-head">
+          <h1>Privacidad y cumplimiento legal</h1>
+          <div class="toolbar">
+            <a class="btn btn-ghost btn-sm" href="/aviso-de-privacidad" target="_blank">Aviso de privacidad</a>
+            <a class="btn btn-ghost btn-sm" href="/terminos-y-condiciones" target="_blank">Términos</a>
+            <a class="btn btn-ghost btn-sm" href="/devoluciones-y-garantias" target="_blank">Devoluciones</a>
+          </div>
+        </div>
+        <div class="admin-card">
+          <h2>Lista de verificación</h2>
+          <p class="muted">Completa lo pendiente en la pestaña «Negocio» antes de publicar el sitio. Mientras falte, las páginas legales muestran el aviso «[Pendiente]».</p>
+          <div id="compliance"></div>
+        </div>
+        <div class="admin-card">
+          <h2>Solicitudes de derechos ARCO</h2>
+          <p class="muted">Responde en un máximo de 20 días desde que se recibe la solicitud (ampliable una vez, informándolo) y, si procede, hazla efectiva en los 15 días siguientes. Verifica la identidad del titular antes de entregar o modificar datos. Para «Acceso» puedes descargar los datos de un pedido desde su detalle; para «Cancelación», elimina el pedido.</p>
+          <div id="arco-list"></div>
+        </div>
       </section>
 
       <!-- QR -->

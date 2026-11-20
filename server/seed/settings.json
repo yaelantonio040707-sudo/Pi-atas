@@ -15,5 +15,14 @@
   "tiktok": "",
   "deliveryInfo": "",
   "paymentInfo": "",
-  "leadTimeInfo": ""
+  "leadTimeInfo": "",
+  "legalName": "",
+  "legalAddress": "",
+  "rfc": "",
+  "privacyEmail": "",
+  "shippingInfo": "",
+  "depositInfo": "",
+  "returnsDays": "",
+  "retentionMonths": "12",
+  "legalUpdated": "2026-11-20"
 }

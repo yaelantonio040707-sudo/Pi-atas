@@ -1,8 +1,10 @@
 import { createApp } from './app.js';
 import { config } from './config.js';
 import { aiEnabled } from './services/chatbot.js';
+import { scheduleRetention } from './services/retention.js';
 
 const app = createApp();
+scheduleRetention();
 
 app.listen(config.port, () => {
   console.log(`Keflita en http://localhost:${config.port}`);

@@ -9,6 +9,8 @@ import {
 } from '../lib/auth.js';
 import { upload, assertImages, saveImage, deleteStoredFile, safeName } from '../lib/uploads.js';
 import { clean, ORDER_STATUSES } from '../lib/validate.js';
+import { complianceChecklist } from '../legal/compliance.js';
+import { purgeExpiredOrders } from '../services/retention.js';
 
 const router = Router();
 const GALLERY_MEDIA_PREFIX = '/media/gallery/';
@@ -58,6 +60,7 @@ router.get('/stats', (req, res) => {
     orders: Object.fromEntries(rows.map((r) => [r.status, r.n])),
     gallery: db.prepare('SELECT COUNT(*) AS n FROM gallery_items').get().n,
     faqs: db.prepare('SELECT COUNT(*) AS n FROM faqs').get().n,
+    arcoOpen: db.prepare("SELECT COUNT(*) AS n FROM arco_requests WHERE status NOT IN ('atendida', 'improcedente')").get().n,
   });
 });
 
@@ -91,6 +94,17 @@ router.get('/orders/:id', (req, res) => {
   if (!order) return res.status(404).json({ error: 'Pedido no encontrado.' });
   const files = db.prepare('SELECT id, kind, filename, original, mime, size FROM order_files WHERE order_id = ?').all(id);
   res.json({ ...order, files: files.map((f) => ({ ...f, url: `/api/admin/files/${f.filename}` })), statuses: ORDER_STATUSES });
+});
+
+// Exporta los datos de una solicitud (útil para responder solicitudes de acceso).
+router.get('/orders/:id/export', (req, res) => {
+  const id = idParam(req.params.id);
+  const order = id && db.prepare('SELECT * FROM orders WHERE id = ?').get(id);
+  if (!order) return res.status(404).json({ error: 'Pedido no encontrado.' });
+  const files = db.prepare('SELECT kind, original, mime, size FROM order_files WHERE order_id = ?').all(id);
+  const { admin_notes, ...data } = order;
+  res.attachment(`datos-${order.code}.json`);
+  res.json({ exportado: new Date().toISOString(), solicitud: data, imagenes: files });
 });
 
 router.patch('/orders/:id', (req, res) => {
@@ -227,7 +241,7 @@ router.delete('/gallery/:id', async (req, res) => {
 // --- Información del negocio -------------------------------------------------------
 router.get('/settings', (req, res) => res.json(getSettings()));
 
-router.put('/settings', (req, res) => {
+router.put('/settings', async (req, res) => {
   const body = { ...(req.body || {}) };
   if ('whatsapp' in body) {
     body.whatsapp = String(body.whatsapp || '').replace(/\D/g, '');
@@ -240,7 +254,25 @@ router.put('/settings', (req, res) => {
       return res.status(400).json({ error: `El enlace de ${k} debe empezar con https://` });
     }
   }
+  if (body.privacyEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(body.privacyEmail).trim())) {
+    return res.status(400).json({ error: 'El correo de privacidad no es válido.' });
+  }
+  if (body.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(body.email).trim())) {
+    return res.status(400).json({ error: 'El correo de contacto no es válido.' });
+  }
+  if ('returnsDays' in body && String(body.returnsDays).trim()) {
+    const n = Number(body.returnsDays);
+    if (!Number.isInteger(n) || n < 1 || n > 365) return res.status(400).json({ error: 'El plazo de garantía debe ser un número de días entre 1 y 365.' });
+  }
+  if ('retentionMonths' in body) {
+    const n = Number(body.retentionMonths);
+    if (!Number.isInteger(n) || n < 1 || n > 120) return res.status(400).json({ error: 'El plazo de conservación debe ser de 1 a 120 meses.' });
+  }
+  if ('legalUpdated' in body && !/^\d{4}-\d{2}-\d{2}$/.test(String(body.legalUpdated))) {
+    return res.status(400).json({ error: 'Indica la fecha de actualización de los documentos legales.' });
+  }
   saveSettings(body);
+  await purgeExpiredOrders();
   res.json({ ok: true, settings: getSettings() });
 });
 
@@ -281,6 +313,34 @@ router.put('/faqs/:id', (req, res) => {
 
 router.delete('/faqs/:id', (req, res) => {
   db.prepare('DELETE FROM faqs WHERE id = ?').run(idParam(req.params.id));
+  res.json({ ok: true });
+});
+
+// --- Privacidad: solicitudes ARCO y cumplimiento -----------------------------------
+const ARCO_STATUSES = ['recibida', 'identidad verificada', 'en proceso', 'atendida', 'improcedente'];
+
+router.get('/compliance', (req, res) => res.json(complianceChecklist()));
+
+router.get('/arco', (req, res) => {
+  const rows = db.prepare('SELECT * FROM arco_requests ORDER BY created_at DESC, id DESC LIMIT 500').all();
+  res.json({ requests: rows, statuses: ARCO_STATUSES });
+});
+
+router.patch('/arco/:id', (req, res) => {
+  const id = idParam(req.params.id);
+  if (!id || !db.prepare('SELECT id FROM arco_requests WHERE id = ?').get(id)) return res.status(404).json({ error: 'Solicitud no encontrada.' });
+  const { status, admin_notes } = req.body || {};
+  if (status !== undefined) {
+    if (!ARCO_STATUSES.includes(status)) return res.status(400).json({ error: 'Estado no válido.' });
+    const done = ['atendida', 'improcedente'].includes(status);
+    db.prepare(`UPDATE arco_requests SET status = ?, resolved_at = ${done ? "COALESCE(resolved_at, datetime('now'))" : 'NULL'} WHERE id = ?`).run(status, id);
+  }
+  if (admin_notes !== undefined) db.prepare('UPDATE arco_requests SET admin_notes = ? WHERE id = ?').run(clean(admin_notes, 3000), id);
+  res.json({ ok: true });
+});
+
+router.delete('/arco/:id', (req, res) => {
+  db.prepare('DELETE FROM arco_requests WHERE id = ?').run(idParam(req.params.id));
   res.json({ ok: true });
 });
 

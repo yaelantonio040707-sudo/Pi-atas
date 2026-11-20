@@ -36,6 +36,7 @@
         <a href="#trabajos">Trabajos</a>
         <a href="#nosotros">Nosotros</a>
         <a href="#cotizaciones">Cotizaciones</a>
+        <a href="#info-compra">Info de compra</a>
         <a href="#preguntas">Preguntas</a>
         <a href="#pedido" class="btn btn-primary btn-sm">Pedir cotización</a>
       </nav>
@@ -159,6 +160,25 @@
           </ul>
           <p class="note">Envía tu solicitud con todos los detalles y te responderemos con la cotización correspondiente. Enviar una solicitud no confirma el pedido.</p>
           <a href="#pedido" class="btn btn-primary btn-lg">Solicitar cotización</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- INFORMACIÓN DE COMPRA -->
+    <section class="section buy-info" id="info-compra" aria-labelledby="info-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="eyebrow">Antes de pedir</p>
+          <h2 id="info-title">Información de compra</h2>
+          <p>Todo lo que necesitas saber sobre precios, pagos, envíos, entregas y garantías.</p>
+        </header>
+        <div class="info-grid">
+          <article class="info-card reveal"><h3><span aria-hidden="true">💲</span> Precios</h3><p>Se cotiza cada pedido. La cotización indica por escrito el <strong>precio total en pesos mexicanos</strong>, con impuestos aplicables y costo de envío, si lo hay.</p></article>
+          <article class="info-card reveal"><h3><span aria-hidden="true">💳</span> Formas de pago</h3><p data-info="paymentInfo">Se indican en tu cotización.</p><p class="hint">El sitio no cobra ni solicita datos bancarios.</p></article>
+          <article class="info-card reveal"><h3><span aria-hidden="true">🚚</span> Envío y costos</h3><p data-info="shippingInfo">El costo de envío, si aplica, se indica en tu cotización.</p></article>
+          <article class="info-card reveal"><h3><span aria-hidden="true">📅</span> Entrega y tiempos</h3><p data-info="deliveryInfo">La forma de entrega se acuerda en tu cotización.</p><p data-info="leadTimeInfo"></p></article>
+          <article class="info-card reveal"><h3><span aria-hidden="true">🧾</span> Anticipos y cancelaciones</h3><p data-info="depositInfo">Se indican en tu cotización antes de confirmar.</p></article>
+          <article class="info-card reveal"><h3><span aria-hidden="true">🛡️</span> Garantías y devoluciones</h3><p>Si tu pedido tiene un defecto o no es lo acordado, puedes pedir reparación, reposición o devolución<span data-info-days></span>.</p><a href="/devoluciones-y-garantias">Ver política completa →</a></article>
         </div>
       </div>
     </section>
@@ -296,6 +316,19 @@
             </div>
           </fieldset>
 
+          <fieldset class="form-card consent">
+            <legend><span class="legend-n">4</span> Privacidad</legend>
+            <p class="privacy-short">
+              <strong>Aviso de privacidad simplificado.</strong> <span id="privacy-resp">Keflita</span>, responsable de tus datos, usará tu nombre, teléfono, los detalles de tu pedido y las imágenes que envíes únicamente para cotizar, contactarte, elaborar y entregar tu pedido, y atender garantías. No los usamos para publicidad ni los vendemos. Puedes ejercer tus derechos de acceso, rectificación, cancelación y oposición en <a href="/derechos-arco">Derechos ARCO</a>. Consulta el <a href="/aviso-de-privacidad" target="_blank">aviso de privacidad integral</a>.
+            </p>
+            <label class="check-line"><input type="checkbox" name="accept_privacy" value="1" required>
+              <span>He leído y acepto el <a href="/aviso-de-privacidad" target="_blank">aviso de privacidad</a>, los <a href="/terminos-y-condiciones" target="_blank">términos y condiciones</a> y la <a href="/devoluciones-y-garantias" target="_blank">política de devoluciones</a>. <span class="req">*</span></span></label>
+            <p class="error" data-error-for="accept_privacy"></p>
+            <label class="check-line"><input type="checkbox" name="allow_publish" value="1">
+              <span>Autorizo publicar fotos del trabajo terminado en la galería y redes de <span data-bind="businessName">Keflita</span> <span class="optional">(opcional, no afecta tu pedido)</span>.</span></label>
+            <p class="hint">Por favor no incluyas datos sensibles ni fotos en las que aparezcan personas.</p>
+          </fieldset>
+
           <div class="form-notice">
             <strong>Importante:</strong> enviar esta solicitud <u>no confirma el pedido</u>. Revisaremos los detalles, confirmaremos la disponibilidad y te enviaremos la cotización.
           </div>
@@ -346,7 +379,14 @@
         </div>
       </div>
       <nav class="footer-social" id="footer-social" aria-label="Redes sociales"></nav>
-      <p class="footer-copy">© <span id="year"></span> <span data-bind="businessName">Keflita</span>. Fotos de trabajos reales elaborados por Keflita.</p>
+      <nav class="footer-legal" aria-label="Información legal">
+        <a href="/aviso-de-privacidad">Aviso de privacidad</a>
+        <a href="/terminos-y-condiciones">Términos y condiciones</a>
+        <a href="/devoluciones-y-garantias">Devoluciones y garantías</a>
+        <a href="/derechos-arco">Derechos ARCO</a>
+        <a href="#info-compra">Información de compra</a>
+      </nav>
+      <p class="footer-copy">© <span id="year"></span> <span data-bind="businessName">Keflita</span><span id="footer-legal-id"></span>. Fotos de trabajos reales elaborados por Keflita.</p>
     </div>
   </footer>
 
@@ -382,7 +422,7 @@
       <input id="chat-input" type="text" maxlength="1000" placeholder="Escribe tu pregunta…" autocomplete="off">
       <button type="submit" aria-label="Enviar">➤</button>
     </form>
-    <p class="chat-disclaimer">El asistente orienta, pero no confirma pedidos ni precios.</p>
+    <p class="chat-disclaimer">Asistente automático: orienta, pero no confirma pedidos ni precios. No escribas datos personales. <a href="/aviso-de-privacidad" target="_blank">Privacidad</a></p>
   </section>
 
   <!-- Visor de fotos -->

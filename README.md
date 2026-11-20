@@ -16,6 +16,24 @@ Sitio web del emprendimiento **Keflita**: muestra los trabajos realizados, expli
 | **Seguridad** | Contraseña con scrypt, sesiones con cookie `HttpOnly`/`SameSite=Strict`, protección CSRF, CSP estricta (Helmet), límite de intentos de inicio de sesión, límites de envío, campo trampa y tiempo mínimo contra spam, verificación del tipo real de las imágenes. |
 | **SEO** | Metadatos, Open Graph, `robots.txt`, `sitemap.xml`, página 404, sitio adaptable y accesible (teclado, lectores de pantalla, movimiento reducido). |
 
+## Cumplimiento legal (México)
+
+| Requisito | Cómo se cumple en el sitio |
+|---|---|
+| **Aviso de privacidad** (LFPDPPP 2025) | Página `/aviso-de-privacidad`: identidad y domicilio del responsable, datos recabados, finalidades primarias y secundaria opcional, proveedores (hosting, IA, tipografías), derechos ARCO, revocación y limitación, conservación, cookies, seguridad, cambios y autoridad (Secretaría Anticorrupción y Buen Gobierno). Aviso simplificado dentro del formulario de pedido. |
+| **Consentimiento** | Casilla obligatoria en el formulario; se guarda la fecha y versión del aviso aceptado. La publicación de fotos del trabajo terminado es una autorización aparte y opcional. |
+| **Derechos ARCO** | Formulario `/derechos-arco` (funciona sin JavaScript) con folio. En el panel: registro, estados, fecha límite de respuesta (20 días), notas, y descarga de los datos de un pedido para responder solicitudes de acceso. |
+| **Conservación de datos** | Las solicitudes entregadas o canceladas se eliminan automáticamente después del plazo configurado (12 meses por defecto), con sus imágenes. |
+| **Términos y condiciones** | Página `/terminos-y-condiciones`: datos del proveedor, cómo se forma un pedido, precios (total en MXN en la cotización), pagos, anticipos, entregas, productos artesanales, imágenes y personajes, asistente automatizado, ley aplicable y PROFECO. |
+| **Devoluciones y garantías** | Página `/devoluciones-y-garantias`: reparación, reposición o devolución; exclusiones; cancelaciones; contacto de PROFECO. |
+| **Información PROFECO** | Sección «Información de compra» en la página principal: precios, formas de pago, envío y costos, entrega y tiempos, anticipos, garantías. |
+| **Seguridad** | Redirección obligatoria a HTTPS y HSTS en producción, contraseña cifrada, archivos privados, CSP. El sitio **no cobra ni pide datos bancarios**, así que no requiere pasarela de pago. |
+| **Transparencia del asistente** | Se identifica como asistente automático y pide no escribir datos personales. |
+
+Los datos que solo el negocio puede proporcionar (nombre o razón social, domicilio, correo de privacidad, formas de pago, envíos, anticipos, días de garantía) se capturan en **Panel → Negocio**. Mientras falten, las páginas legales muestran «[Pendiente: …]» y **Panel → Privacidad y legal** muestra la lista de verificación. **Completa todo antes de publicar.**
+
+> Estos textos son una base redactada conforme a la legislación vigente, no sustituyen la asesoría de un abogado. Antes de publicar, conviene que una persona con conocimientos legales los revise.
+
 ## Tecnologías
 
 - **Node.js 22** + **Express 5** (un solo servicio sirve el sitio y la API).

@@ -69,10 +69,7 @@ async function loadOrders() {
       el('span', {}, `${o.product_type} · ${o.theme}`),
       el('span', { class: 'meta' }, `${o.code} · Para: ${o.needed_date}${o.files ? ` · 📎 ${o.files}` : ''}`))));
   if (!data.orders.length) list.append(el('p', { class: 'muted' }, 'No hay solicitudes con estos filtros.'));
-  const stats = await call('/api/admin/stats');
-  const n = stats.orders['nuevo'] || 0;
-  $('#new-count').hidden = !n;
-  $('#new-count').textContent = n;
+  await refreshCounts();
 }
 loaders.orders = loadOrders;
 let searchTimer;
@@ -88,6 +85,8 @@ async function openOrder(id) {
     ['Producto', o.product_type === 'Otro' ? `Otro: ${o.product_other}` : o.product_type], ['Personaje / temática', o.theme],
     ['Tamaño', o.size], ['Colores', o.colors], ['Cantidad', o.quantity], ['Fecha requerida', formatDate(o.needed_date)],
     ['Presupuesto', o.budget], ['Descripción', o.description],
+    ['Aviso de privacidad', o.privacy_accepted_at ? `Aceptado el ${fmtDateTime(o.privacy_accepted_at)} (versión ${o.privacy_version || '—'})` : 'Sin registro (solicitud anterior al aviso)'],
+    ['Publicar fotos', o.allow_publish ? 'Sí, el cliente lo autorizó' : 'No autorizado'],
   ].filter(([, v]) => String(v ?? '').trim());
 
   const digits = o.phone.replace(/\D/g, '');
@@ -102,7 +101,8 @@ async function openOrder(id) {
     el('h2', {}, `${o.name}`), statusBadge(o.status),
     el('div', { class: 'quick-contact' },
       wa ? el('a', { class: 'btn btn-whatsapp btn-sm', href: wa, target: '_blank', rel: 'noopener' }, 'WhatsApp') : null,
-      el('a', { class: 'btn btn-ghost btn-sm', href: `tel:${o.phone.replace(/[^\d+]/g, '')}` }, 'Llamar')),
+      el('a', { class: 'btn btn-ghost btn-sm', href: `tel:${o.phone.replace(/[^\d+]/g, '')}` }, 'Llamar'),
+      el('a', { class: 'btn btn-ghost btn-sm', href: `/api/admin/orders/${o.id}/export`, title: 'Para responder solicitudes de acceso (ARCO)' }, 'Descargar datos')),
     el('dl', { class: 'detail-grid' }, rows.flatMap(([k, v]) => [el('dt', {}, k), el('dd', {}, String(v))])),
     o.files.length ? el('h3', {}, 'Imágenes adjuntas') : null,
     o.files.length ? el('div', { class: 'attach' }, o.files.map((f) =>
@@ -252,6 +252,69 @@ async function loadFaqs() {
 loaders.faqs = loadFaqs;
 $('#new-faq').addEventListener('click', () => { const c = faqCard(); $('#faqs').prepend(c); c.querySelector('input').focus(); });
 
+// --- Privacidad y legal ----------------------------------------------------
+const DAY = 864e5;
+async function loadPrivacy() {
+  const [groups, arco] = await Promise.all([call('/api/admin/compliance'), call('/api/admin/arco')]);
+  $('#compliance').replaceChildren(...groups.map((g) =>
+    el('div', { class: 'check-group' },
+      el('h3', {}, g.group),
+      el('ul', { class: 'checklist' }, g.items.map((it) =>
+        el('li', { class: it.ok ? 'ok' : 'missing' },
+          el('span', { 'aria-hidden': 'true' }, it.ok ? '✅' : '⚠️'),
+          el('span', {}, it.label, it.ok ? '' : el('span', { class: 'sr-only' }, ' (pendiente)')),
+          !it.ok && it.field ? el('button', { type: 'button', class: 'link-btn', onclick: () => goToField(it.field) }, 'Completar') : null))))));
+
+  const list = $('#arco-list');
+  if (!arco.requests.length) { list.replaceChildren(el('p', { class: 'muted' }, 'No hay solicitudes ARCO.')); return; }
+  list.replaceChildren(...arco.requests.map((r) => {
+    const received = new Date(`${r.created_at.replace(' ', 'T')}Z`);
+    const due = new Date(received.getTime() + 20 * DAY);
+    const open = !['atendida', 'improcedente'].includes(r.status);
+    const left = Math.ceil((due - Date.now()) / DAY);
+    const statusSel = el('select', { 'aria-label': 'Estado' }, arco.statuses.map((s) => el('option', { value: s, selected: s === r.status }, s)));
+    const notes = el('textarea', { rows: 3, placeholder: 'Notas: verificación de identidad, respuesta enviada, fecha…' });
+    notes.value = r.admin_notes;
+    return el('article', { class: 'arco-item' },
+      el('div', { class: 'arco-top' },
+        el('strong', {}, `${r.right_type} · ${r.name}`),
+        statusBadge(r.status),
+        open ? el('span', { class: `due ${left <= 5 ? 'due-soon' : ''}` }, left >= 0 ? `Responder antes del ${due.toLocaleDateString('es-MX')} (${left} días)` : `Plazo vencido el ${due.toLocaleDateString('es-MX')}`) : null),
+      el('p', { class: 'meta' }, `${r.code} · Recibida ${fmtDateTime(r.created_at)} · Contacto: ${r.contact}${r.order_code ? ` · Pedido: ${r.order_code}` : ''}`),
+      el('p', { class: 'arco-desc' }, r.description),
+      el('div', { class: 'grid-2' },
+        el('div', { class: 'field' }, el('label', {}, 'Estado'), statusSel),
+        el('div', { class: 'field' }, el('label', {}, 'Notas internas'), notes)),
+      el('div', { class: 'row-actions' },
+        el('button', { class: 'btn btn-danger btn-sm', onclick: async () => {
+          if (!confirm(`¿Eliminar el registro ${r.code}? Conserva los registros mientras puedan requerirse como evidencia.`)) return;
+          await call(`/api/admin/arco/${r.id}`, { method: 'DELETE' });
+          loadPrivacy();
+        } }, 'Eliminar'),
+        el('button', { class: 'btn btn-primary btn-sm', onclick: async () => {
+          await call(`/api/admin/arco/${r.id}`, { method: 'PATCH', json: { status: statusSel.value, admin_notes: notes.value } });
+          toast('Solicitud actualizada');
+          loadPrivacy();
+          refreshCounts();
+        } }, 'Guardar')));
+  }));
+}
+loaders.privacy = loadPrivacy;
+
+function goToField(name) {
+  $('.admin-tabs [data-tab="business"]').click();
+  setTimeout(() => { const f = $(`#settings-form [name="${name}"]`); f?.scrollIntoView({ block: 'center' }); f?.focus(); }, 300);
+}
+
+async function refreshCounts() {
+  const stats = await call('/api/admin/stats');
+  const n = stats.orders['nuevo'] || 0;
+  $('#new-count').hidden = !n;
+  $('#new-count').textContent = n;
+  $('#arco-count').hidden = !stats.arcoOpen;
+  $('#arco-count').textContent = stats.arcoOpen;
+}
+
 // --- QR --------------------------------------------------------------------
 async function loadQr() {
   const { siteUrl } = await call('/api/admin/site-url');
@@ -283,6 +346,11 @@ async function startApp() {
     $('#w-cat').replaceChildren(...catOptions());
   } catch { /* se reintenta al abrir galería */ }
   loadOrders().catch((e) => toast(e.message));
+  // Aviso si falta información legal obligatoria
+  call('/api/admin/compliance').then((groups) => {
+    const missing = groups.flatMap((g) => g.items).filter((i) => !i.ok).length;
+    if (missing) toast(`Hay ${missing} requisito(s) legal(es) pendiente(s). Revisa «Privacidad y legal».`);
+  }).catch(() => {});
 }
 
 (async () => {

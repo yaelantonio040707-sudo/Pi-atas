@@ -64,6 +64,19 @@ function applySite(data) {
       el('span', {}, 'Déjanos tu solicitud en el formulario de pedido y te contactaremos al número que nos compartas.')));
   }
 
+  // Información de compra (PROFECO): se muestra lo que el negocio haya capturado en el panel
+  for (const node of $$('[data-info]')) {
+    const v = data[node.dataset.info];
+    if (v) node.textContent = v;
+  }
+  const days = Number.parseInt(data.returnsDays, 10);
+  const daysNode = $('[data-info-days]');
+  if (daysNode && days > 0) daysNode.textContent = ` (repórtalo dentro de los ${days} días naturales siguientes a la entrega)`;
+  if (data.legalName) {
+    $('#privacy-resp').textContent = `${data.legalName} («${data.businessName}»)`;
+    $('#footer-legal-id').textContent = ` · Responsable: ${data.legalName}${data.legalAddress ? `, ${data.legalAddress}` : ''}`;
+  }
+
   const social = $('#footer-social');
   social.replaceChildren();
   for (const [k, label] of [['facebook', 'Facebook'], ['instagram', 'Instagram'], ['tiktok', 'TikTok']]) {

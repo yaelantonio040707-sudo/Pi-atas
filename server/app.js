@@ -8,12 +8,21 @@ import path from 'node:path';
 import { config, paths } from './config.js';
 import publicRoutes from './routes/public.js';
 import adminRoutes from './routes/admin.js';
+import legalRoutes from './routes/legal.js';
 import { requireAdmin } from './lib/auth.js';
 
 export function createApp() {
   const app = express();
   app.disable('x-powered-by');
   if (process.env.TRUST_PROXY) app.set('trust proxy', Number(process.env.TRUST_PROXY) || 1);
+
+  // En producción todo el tráfico va por HTTPS (los datos de los formularios viajan cifrados).
+  if (config.isProd && process.env.FORCE_HTTPS !== '0') {
+    app.use((req, res, next) => {
+      if (req.secure || ['localhost', '127.0.0.1'].includes(req.hostname)) return next();
+      res.redirect(301, `https://${req.get('host')}${req.originalUrl}`);
+    });
+  }
 
   app.use(
     helmet({
@@ -31,6 +40,8 @@ export function createApp() {
         },
       },
       crossOriginEmbedderPolicy: false,
+      strictTransportSecurity: { maxAge: 31536000, includeSubDomains: false },
+      referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
     })
   );
   app.use(cookieParser());
@@ -63,9 +74,13 @@ export function createApp() {
   app.get('/sitemap.xml', (req, res) => {
     if (!config.siteUrl) return res.status(404).end();
     res.type('application/xml').send(
-      `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${config.siteUrl}/</loc><changefreq>weekly</changefreq></url></urlset>`
+      `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${['/', '/aviso-de-privacidad', '/terminos-y-condiciones', '/devoluciones-y-garantias', '/derechos-arco']
+        .map((p) => `<url><loc>${config.siteUrl}${p}</loc></url>`).join('')}</urlset>`
     );
   });
+
+  // --- Páginas legales ---
+  app.use(legalRoutes);
 
   // --- Archivos estáticos ---
   app.use('/media/gallery', express.static(paths.galleryUploads, { maxAge: '30d', immutable: true, fallthrough: false }));

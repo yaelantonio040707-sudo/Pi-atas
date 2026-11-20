@@ -120,7 +120,8 @@ export function initOrderForm(site) {
     if (!Number.isInteger(q) || q < 1 || q > 500) errors.quantity = 'Indica una cantidad entre 1 y 500.';
     if (!v.needed_date) errors.needed_date = 'Indica la fecha para la que lo necesitas.';
     else if (v.needed_date < localToday()) errors.needed_date = 'La fecha no puede ser anterior a hoy.';
-    ['name', 'phone', 'product_type', 'product_other', 'theme', 'quantity', 'needed_date'].forEach((k) => setError(k, errors[k]));
+    if (v.accept_privacy !== '1') errors.accept_privacy = 'Para enviar tu solicitud debes aceptar el aviso de privacidad y los términos.';
+    ['name', 'phone', 'product_type', 'product_other', 'theme', 'quantity', 'needed_date', 'accept_privacy'].forEach((k) => setError(k, errors[k]));
     return { values: v, errors };
   }
   form.addEventListener('input', (e) => { if (e.target.getAttribute('aria-invalid') === 'true') validate(); });
@@ -135,6 +136,10 @@ export function initOrderForm(site) {
       [LABELS.needed_date, formatDate(v.needed_date)], [LABELS.budget, v.budget], [LABELS.description, v.description],
     ].filter(([, val]) => String(val ?? '').trim());
   }
+  const consentRows = (v) => [
+    ['Aviso de privacidad', v.accept_privacy === '1' ? 'Aceptado' : 'No aceptado'],
+    ['Publicar fotos del trabajo', v.allow_publish === '1' ? 'Sí, autorizo' : 'No'],
+  ];
   function openModal() {
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
@@ -163,7 +168,7 @@ export function initOrderForm(site) {
     $('#summary-view').hidden = false;
     $('#success-view').hidden = true;
     $('#submit-error').textContent = '';
-    $('#summary-list').replaceChildren(...summaryRows(values).flatMap(([k, val]) => [el('dt', {}, k), el('dd', {}, String(val))]));
+    $('#summary-list').replaceChildren(...[...summaryRows(values), ...consentRows(values)].flatMap(([k, val]) => [el('dt', {}, k), el('dd', {}, String(val))]));
     const imgs = files.map((f) => el('img', { src: URL.createObjectURL(f), alt: 'Foto de referencia' }));
     if (sketch.hasSketch()) imgs.push(el('img', { src: sketch.dataUrl(), alt: 'Tu boceto' }));
     $('#summary-images').replaceChildren(...(imgs.length ? [el('p', { class: 'muted' }, `Imágenes adjuntas: ${imgs.length}`), ...imgs] : []));

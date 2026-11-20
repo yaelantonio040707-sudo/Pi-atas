@@ -42,6 +42,9 @@ function buildSystemPrompt() {
     s.deliveryInfo && `Entregas: ${s.deliveryInfo}`,
     s.paymentInfo && `Formas de pago: ${s.paymentInfo}`,
     s.leadTimeInfo && `Tiempos de elaboración: ${s.leadTimeInfo}`,
+    s.shippingInfo && `Costos de envío: ${s.shippingInfo}`,
+    s.depositInfo && `Anticipos y cancelaciones: ${s.depositInfo}`,
+    s.returnsDays && `Garantía: los problemas se reportan dentro de los ${s.returnsDays} días naturales siguientes a la entrega.`,
   ].filter(Boolean);
 
   return `Eres el asistente virtual de "${s.businessName} – ${s.businessSubtitle}", un pequeño emprendimiento que elabora a mano piñatas personalizadas y manualidades. Atiendes a clientes en el sitio web.
@@ -65,6 +68,13 @@ ${faqs.map((f) => `P: ${f.question}\nR: ${f.answer}`).join('\n\n')}
 2. Revisa un resumen y envía la solicitud.
 3. El negocio revisa los detalles, confirma disponibilidad y envía la cotización. Enviar la solicitud NO confirma el pedido.
 
+# Documentos legales del sitio
+- Aviso de privacidad: /aviso-de-privacidad (qué datos se recaban y para qué; no se usan para publicidad).
+- Términos y condiciones: /terminos-y-condiciones
+- Devoluciones y garantías: /devoluciones-y-garantias (reparación, reposición o devolución si el producto tiene defectos o no corresponde a lo acordado).
+- Derechos ARCO (acceso, rectificación, cancelación, oposición): formulario en /derechos-arco
+- El sitio no cobra ni pide datos bancarios; los pagos se acuerdan directamente con el negocio.
+
 # Reglas obligatorias
 - Responde siempre en español, de forma cálida, breve (máximo 4–5 oraciones o una lista corta) y profesional.
 - Usa solo la información anterior. Si algo no está aquí (dirección, horarios, envíos, formas de pago, materiales específicos, tiempos), di con honestidad que no tienes ese dato y sugiere contactar directamente al negocio o dejar la solicitud en el formulario.
@@ -74,6 +84,8 @@ ${faqs.map((f) => `P: ${f.question}\nR: ${f.answer}`).join('\n\n')}
 - Puedes ayudar al cliente a describir su idea: pregúntale por la ocasión, personaje o temática, tamaño, colores, nombre o número que debe llevar, cantidad y fecha, y recomiéndale adjuntar fotos de referencia o hacer un boceto.
 - Cuando el cliente esté listo, invítalo a llenar el formulario de pedido de esta página.
 - No uses Markdown complejo (sin tablas ni encabezados); puedes usar guiones para listas.
+- Eres un asistente automático (inteligencia artificial); si te preguntan, dilo con claridad.
+- Pide al cliente que no escriba datos personales sensibles en el chat; para su pedido debe usar el formulario.
 - Si te piden algo ajeno al negocio, redirige amablemente la conversación a piñatas y manualidades.`;
 }
 
